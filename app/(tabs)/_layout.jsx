@@ -1,8 +1,11 @@
 import { Tabs } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useCart } from '../../context/CartContext';
 
 const TabsLayout = () => {
+    const { cartTotalQty } = useCart();
+
     return (
       <Tabs>
         <Tabs.Screen
@@ -23,6 +26,7 @@ const TabsLayout = () => {
               <Ionicons name="cart-outline" size={24} color={color} />
             ),
             tabBarActiveTintColor: "tomato",
+            tabBarBadge: cartTotalQty > 0 ? cartTotalQty : undefined,
           }}
         />
         <Tabs.Screen

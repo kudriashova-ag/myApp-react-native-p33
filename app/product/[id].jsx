@@ -1,23 +1,31 @@
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { PRODUCTS } from "../../data/products";
 import Button from "../../src/ui/Button/Button";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useCart } from "../../context/CartContext";
 
 const ProductScreen = () => {
   const { id } = useLocalSearchParams();
+  const { bottom } = useSafeAreaInsets();
+  const { addToCart } = useCart();
+  const router = useRouter();
 
   const product = PRODUCTS.find((product) => product.id === id);
 
   return (
-    <View style={{flex:1}}>
-      <Image source={{ uri: product.image }} style={styles.image} />
-      <Text style={styles.title}>{product.title}</Text>
-      <Text style={styles.price}>{product.price} грн</Text>
-
-      <View style={styles.footer}>
+    <View style={{ flex: 1, padding: 15 }}>
+      <ScrollView style={{ flex: 1, marginBottom: bottom + 60 }}>
+        <Image source={{ uri: product.image }} style={styles.image} />
+        <Text style={styles.title}>{product.title}</Text>
         <Text style={styles.price}>{product.price} грн</Text>
-        <Button text="В кошик" />
+        <Text>{product.description}</Text>
+      </ScrollView>
+
+      <View style={[styles.footer, { bottom: bottom }]}>
+        <Text style={styles.price}>{product.price} грн</Text>
+        <Button text="В кошик" onPress={() => { addToCart(product); router.push("/cart") }} />
       </View>
     </View>
   );
