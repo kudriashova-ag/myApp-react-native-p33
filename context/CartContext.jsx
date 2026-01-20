@@ -1,7 +1,8 @@
-import { createContext, useContext, useReducer } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { createContext, useContext, useEffect, useReducer } from 'react';
+import { StyleSheet } from 'react-native';
 import CartReducer from '../reducer/CartReducer';
 import { CART_TYPES } from '../reducer/cart.types';
+import useStorage from '../hooks/useStorage';
 
 
 const CartContext = createContext([]);
@@ -9,6 +10,8 @@ const CartContext = createContext([]);
 
 const CartProvider = ({ children }) => {
     const [items, dispatch] = useReducer(CartReducer, []);
+
+    useStorage('cart', items, dispatch, CART_TYPES.SET_ITEMS);
 
     const addToCart = product => dispatch({ type: CART_TYPES.ADD_ITEM, payload: product });
     const removeFromCart = id => dispatch({ type: CART_TYPES.REMOVE_ITEM, payload: id });

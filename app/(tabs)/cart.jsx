@@ -1,5 +1,6 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useCart } from '../../context/CartContext';
+import CartItem from '../../src/components/CartItem';
 
 
 const Cart = () => {
@@ -18,10 +19,7 @@ const Cart = () => {
           data={items}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View>
-              <Text>{item.title}</Text>
-              <Text>{item.quantity} шт.</Text>
-            </View>
+            <CartItem item={item} />
           )}
         />
       </View>

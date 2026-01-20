@@ -2,6 +2,9 @@ import { CART_TYPES } from "./cart.types";
 
 const CartReducer = (state, action) => {
     switch (action.type) {
+        case CART_TYPES.SET_ITEMS:
+            return action.payload;
+        
         case CART_TYPES.ADD_ITEM:
             const exists = state.find(item => item.id === action.payload.id);
             if (exists)
@@ -18,7 +21,9 @@ const CartReducer = (state, action) => {
             return state.map(item => item.id === action.payload ? { ...item, quantity: item.quantity + 1 } : item);
 
         case CART_TYPES.DECREASE_QUANTITY:
-            return state.map(item => item.id === action.payload ? { ...item, quantity: item.quantity - 1 } : item);
+            return state
+                .map(item => item.id === action.payload ? { ...item, quantity: item.quantity - 1 } : item)
+                .filter(item => item.quantity > 0);
         default:
             return state;
     }

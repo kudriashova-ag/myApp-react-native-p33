@@ -1,20 +1,23 @@
 import {  Stack } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import CartProvider from "../context/CartContext";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const RootLayout = () => {
   return (
-    <CartProvider>
-      <View style={{ flex: 1 }}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="product/[id]"
-            options={{ title: "Опис товару" }}
-          />
-        </Stack>
-      </View>
-    </CartProvider>
+    <GestureHandlerRootView>
+      <CartProvider>
+        <View style={{ flex: 1 }}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="product/[id]"
+              options={{ title: "Опис товару" }}
+            />
+          </Stack>
+        </View>
+      </CartProvider>
+    </GestureHandlerRootView>
   );
 };
 
