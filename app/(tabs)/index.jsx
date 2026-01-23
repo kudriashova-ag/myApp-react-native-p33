@@ -2,13 +2,7 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 // import { PRODUCTS } from "../../data/products";
 import ProductCard from "../../src/components/ProductCard";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../../api/axios";
 import { getProducts } from "../../services/products.service";
-
-// export const getProducts = async () => {
-//     const { data } = await api.get('/products');
-//     return data.data.map(product=>({...product, id:product._id}));
-// }
 
 const Index = () => {
   const { data: products=[], isLoading } = useQuery({
