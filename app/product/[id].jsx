@@ -5,6 +5,8 @@ import { PRODUCTS } from "../../data/products";
 import Button from "../../src/ui/Button/Button";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCart } from "../../context/CartContext";
+import { useQuery } from "@tanstack/react-query";
+import { getProductById } from "../../services/products.service";
 
 const ProductScreen = () => {
   const { id } = useLocalSearchParams();
@@ -12,7 +14,19 @@ const ProductScreen = () => {
   const { addToCart } = useCart();
   const router = useRouter();
 
-  const product = PRODUCTS.find((product) => product.id === id);
+  const { data: product={}, isLoading } = useQuery({
+    queryKey: ["product", id],
+    queryFn: () => getProductById(id),
+    enabled: !!id,
+  });  
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 1, padding: 15 }}>
