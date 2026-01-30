@@ -1,10 +1,13 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useCart } from '../../context/CartContext';
 import CartItem from '../../src/components/CartItem';
+import { useAuth } from '../../context/AuthContext';
+import Button from '../../src/ui/Button/Button';
 
 
 const Cart = () => {
-    const { items } = useCart();
+  const { items } = useCart();
+  const { isAuth } = useAuth();
     
     if (items.length === 0) 
         return (
@@ -22,6 +25,9 @@ const Cart = () => {
             <CartItem item={item} />
           )}
         />
+
+        {isAuth && <Button text="Оформити замовлення" />}
+        
       </View>
     );
 }

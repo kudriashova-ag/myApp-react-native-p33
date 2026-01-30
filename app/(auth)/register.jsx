@@ -3,29 +3,40 @@ import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import AppTextInput from "../../src/ui/Input/AppTextInput";
 import Button from "../../src/ui/Button/Button";
 import { useAuth } from "../../context/AuthContext";
-import { Link } from "expo-router";
 
-const Login = ({ onSwitch }) => {
-  const { login } = useAuth();
+const Register = ({ onSwitch }) => {
+  const { register, login } = useAuth();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorName, setErrorName] = useState(null);
   const [errorEmail, setErrorEmail] = useState(null);
   const [errorPassword, setErrorPassword] = useState(null);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email) setErrorEmail("Введіть email");
     if (!password) setErrorPassword("Введіть пароль");
+    if (!name) setErrorName("Введіть ім'я");
+
     try {
-      if (email && password) {
-        login({ email, password });
+      if (email && password && name) {
+        await register({ name, email, password });
+        await login({ email, password });
       }
-    } catch(error) {
-      Alert.alert("Error", error);
+    } catch {
+      Alert.alert("Error", "Invalid email or password");
     }
   };
 
   return (
     <View style={styles.container}>
+      <AppTextInput
+        label="Name"
+        placeholder="Введіть ім'я"
+        value={name}
+        onChangeText={setName}
+        error={errorName}
+      />
       <AppTextInput
         label="Email"
         placeholder="Введіть email"
@@ -41,11 +52,11 @@ const Login = ({ onSwitch }) => {
         onChangeText={setPassword}
         error={errorPassword} // тут можна передавати помилку
       />
-      <Button text="Увійти" onPress={handleLogin} />
+      <Button text="Зареєструватись" onPress={handleLogin} />
       <Text>
-        Ще немає аккаунту?
+        Вже є аккаунту?
         <Pressable onPress={onSwitch} style={{ color: "dodgerblue" }}>
-          <Text>Зареєструватися</Text>
+          <Text>Увійти</Text>
         </Pressable>
       </Text>
     </View>
@@ -60,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Register;
