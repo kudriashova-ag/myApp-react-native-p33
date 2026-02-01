@@ -3,9 +3,13 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import ProductCard from "../../src/components/ProductCard";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../../services/products.service";
+import useDimensions from "../../hooks/useDimensions";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Index = () => {
-  const { data: products=[], isLoading } = useQuery({
+  const {isLandscape} = useDimensions();
+
+  const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: getProducts,
     retry: 5,
@@ -20,15 +24,16 @@ const Index = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={products}
+        key={isLandscape ? "landscape" : "portrait"}
         keyExtractor={(item) => item.id}
-        numColumns={2}
+        numColumns={isLandscape ? 3 : 2}
         columnWrapperStyle={styles.row}
         renderItem={({ item }) => <ProductCard product={item} />}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -37,7 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 20,
+    
   },
   row: {
     justifyContent: "space-between",
