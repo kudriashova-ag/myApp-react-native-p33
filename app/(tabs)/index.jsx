@@ -5,9 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../../services/products.service";
 import useDimensions from "../../hooks/useDimensions";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useSelector } from "react-redux";
 
 const Index = () => {
-  const {isLandscape} = useDimensions();
+  const { isLandscape } = useDimensions();
+  const { theme } = useSelector((state) => state.theme);
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
@@ -24,7 +26,7 @@ const Index = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme === "light" ? "#fff" : "#000" }]}>
       <FlatList
         data={products}
         key={isLandscape ? "landscape" : "portrait"}
