@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { useAuth } from "../../context/AuthContext";
+import { useState } from "react";
+import { StyleSheet } from "react-native";
 import Login from "../(auth)/login";
-import Button from "../../src/ui/Button/Button";
 import Register from "../(auth)/register";
+import ProfileScreen from "../(auth)/profileScreen";
+import { useAuth } from "../../context/AuthContext";
 
 const Profile = () => {
-  const { user, logout } = useAuth();
   const [authScreen, setAuthScreen] = useState("login");
+  const { user } = useAuth();
 
   if (!user) {
     return authScreen === "login" ? (
@@ -17,14 +17,7 @@ const Profile = () => {
     );
   }
 
-  return (
-    <View>
-      <Text>Profile</Text>
-      <Text>{user.email}</Text>
-      <Text>{user.name}</Text>
-      <Button text="Logout" onPress={logout} />
-    </View>
-  );
+  return <ProfileScreen />;
 };
 
 const styles = StyleSheet.create({});

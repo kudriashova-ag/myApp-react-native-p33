@@ -1,15 +1,12 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
-// import { PRODUCTS } from "../../data/products";
 import ProductCard from "../../src/components/ProductCard";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../../services/products.service";
 import useDimensions from "../../hooks/useDimensions";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useSelector } from "react-redux";
+import { ThemedSafeAreaView } from "../../src/ui/Themed";
 
 const Index = () => {
   const { isLandscape } = useDimensions();
-  const { theme } = useSelector((state) => state.theme);
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["products"],
@@ -26,7 +23,7 @@ const Index = () => {
   }
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme === "light" ? "#fff" : "#000" }]}>
+    <ThemedSafeAreaView style={styles.container}>
       <FlatList
         data={products}
         key={isLandscape ? "landscape" : "portrait"}
@@ -35,7 +32,7 @@ const Index = () => {
         columnWrapperStyle={styles.row}
         renderItem={({ item }) => <ProductCard product={item} />}
       />
-    </SafeAreaView>
+    </ThemedSafeAreaView>
   );
 };
 

@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import useDimensions from "../../hooks/useDimensions";
+import { ThemedText } from "../ui/Themed";
 
 const ProductCard = ({ product }) => {  
   const { isLandscape } = useDimensions();
@@ -9,18 +10,17 @@ const ProductCard = ({ product }) => {
 
   return (
     <Pressable
-      style={[styles.card, {width: isLandscape ? '32%' : '48%'}]}
+      style={[styles.card, { width: isLandscape ? "32%" : "48%" }]}
       onPress={() => router.push(`/product/${product.id}`)}
     >
       <Image source={{ uri: product.image }} style={styles.image} />
 
       <View style={styles.info}>
-        <Text style={styles.title} numberOfLines={2}>
+        <ThemedText style={styles.title} numberOfLines={2}>
           {product.title}
-        </Text>
+        </ThemedText>
         <Text style={styles.price}>{product.price}</Text>
       </View>
-      
     </Pressable>
   );
 };
